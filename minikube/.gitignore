@@ -1,0 +1,4 @@
+agones_1_33_0
+.terraform
+terraform.tfstate
+terraform.tfstate.backup

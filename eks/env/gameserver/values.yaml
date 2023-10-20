@@ -1,0 +1,12 @@
+containerPort: 7777
+containers:
+  image: "442711548248.dkr.ecr.ap-northeast-1.amazonaws.com/lyra-on-k8s-agones"
+  imageTag: debug
+  name: "lyra-server"
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1000Mi
+    limits:
+      cpu: 2000m
+      memory: 2000Mi

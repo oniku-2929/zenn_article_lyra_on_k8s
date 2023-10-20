@@ -1,0 +1,63 @@
+# Copyright 2020 Google LLC All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: "agones.dev/v1"
+kind: Fleet
+metadata:
+  name: fleet-lyra-game-server
+spec:
+  replicas: 2
+  scheduling: Packed
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+#  allocationOverflow:
+#    labels:
+#      mykey: myvalue
+#      version: "" # empty an existing label value
+#    annotations:
+#      otherkey: setthisvalue
+  template:
+    metadata:
+      generateName: "lyra-game-server-"
+      name: "lyra-game-server"
+    spec:
+      ports:
+      - name: default
+        portPolicy: Dynamic
+        containerPort: {{ .Values.containerPort }}
+      health:
+        disabled: false
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        failureThreshold: 6
+      sdkServer:
+        logLevel: Info
+        grpcPort: 9357
+        httpPort: 9358
+      template:
+        spec:
+          containers:
+            - image: {{ .Values.containers.image }}:{{ .Values.containers.imageTag }}
+              name: {{ .Values.containers.name }}
+              resources:
+                requests:
+                  memory: {{ .Values.containers.resources.requests.memory }}
+                  cpu: {{ .Values.containers.resources.requests.cpu }}
+                limits:
+                  memory: {{ .Values.containers.resources.limits.memory }}
+                  cpu: {{ .Values.containers.resources.limits.cpu }}
+

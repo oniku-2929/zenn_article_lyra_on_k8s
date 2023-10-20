@@ -1,0 +1,11 @@
+containerPort: 7777
+containers:
+  image: "lyra-on-k8s-agones:debug"
+  name: "lyra-server"
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1500Mi
+    limits:
+      cpu: 2000m
+      memory: 3000Mi

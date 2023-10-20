@@ -1,0 +1,21 @@
+services:
+  lyra-server:
+    image: lyra-on-k8s-agones:${TAG:-latest}
+    build:
+      context: ./Build
+      dockerfile: ./Dockerfile
+      args:
+        TAG: ${TAG}
+    ports:
+      - "7777:7777/udp"
+    depends_on:
+      - sdk
+    container_name: lyra-server
+    command: -log -ini:Game:[/Script/Agones.AgonesComponent]:SDKHost=sdk
+  sdk:
+    image: us-docker.pkg.dev/agones-images/release/agones-sdk:1.33.0
+    command: --local --address sdk
+    container_name: sdk
+    ports:
+      - "9357"
+      - "9358"

@@ -1,0 +1,30 @@
+gameservers:
+  namespaces:
+    - default
+    - agones-gameserver
+
+agones:
+  ping:
+    http:
+      serviceType: ClusterIP
+    udp:
+      serviceType: ClusterIP
+
+  allocator:
+    service:
+      serviceType: ClusterIP
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: multicluster.agones.dev/role
+                    operator: In
+                    values:
+                      - allocator
+            topologyKey: kubernetes.io/hostname
+  metrics:
+    prometheusEnabled: true
+    prometheusServiceDiscovery: true
