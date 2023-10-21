@@ -1,3 +1,3 @@
 # About this repository
-for explanation of the Tech Blog 
+for explaning a Tech Blog. 
 [TODO:put blog URL]
